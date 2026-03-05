@@ -1,0 +1,23 @@
+name: 'CodeRifts API Governance'
+description: 'Detect breaking changes in OpenAPI schemas on every pull request'
+author: 'CodeRifts'
+branding:
+  icon: 'shield'
+  color: 'blue'
+
+inputs:
+  api-key:
+    description: 'CodeRifts API key'
+    required: true
+  base-branch:
+    description: 'Base branch to compare against'
+    required: false
+    default: 'main'
+  fail-on-breaking:
+    description: 'Fail the workflow on breaking changes'
+    required: false
+    default: 'true'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
