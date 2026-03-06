@@ -1,19 +1,49 @@
 # CodeRifts GitHub Action
 
-Detect breaking changes in OpenAPI schemas on every pull request — directly in your GitHub Actions workflow.
+[![npm version](https://img.shields.io/npm/v/coderifts?color=blue&label=coderifts)](https://www.npmjs.com/package/coderifts)
+[![License: Proprietary](https://img.shields.io/badge/license-Proprietary-red.svg)](https://coderifts.com/terms/)
 
-This Action uses the [CodeRifts CLI](https://www.npmjs.com/package/coderifts) to analyze OpenAPI spec changes and report breaking changes, risk scores, and policy violations.
+Official GitHub Action for [CodeRifts](https://coderifts.com) — API governance on every pull request. Detects breaking changes in OpenAPI schemas, scores risk, enforces policies, and posts a governance report as a PR comment.
 
-## Usage
+Works with GitHub, GitLab, Bitbucket, and any CI/CD pipeline.
+
+## Quick Start
+
+```yaml
+- uses: coderifts/action@v1
+  with:
+    api-key: ${{ secrets.CODERIFTS_API_KEY }}
+```
+
+## Inputs
+
+| Input | Required | Default | Description |
+|---|---|---|---|
+| `api-key` | Yes | — | Your CodeRifts API key |
+| `base-branch` | No | `main` | Branch to compare against |
+| `fail-on-breaking` | No | `false` | Fail the workflow on breaking changes |
+| `config-file` | No | `.coderifts.yml` | Path to governance policy file |
+
+## Setup
+
+1. Get a free API key at [app.coderifts.com/api/signup](https://app.coderifts.com/api/signup)
+2. Add `CODERIFTS_API_KEY` as a repository secret in **Settings → Secrets and variables → Actions**
+3. Add the workflow file above to `.github/workflows/api-governance.yml`
+4. Every pull request that modifies an OpenAPI spec will now run a CodeRifts governance check
+
+## Full Example
 
 ```yaml
 name: API Governance
-
 on:
   pull_request:
+    paths:
+      - '**/*.yaml'
+      - '**/*.yml'
+      - '**/*.json'
 
 jobs:
-  coderifts:
+  api-governance:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,30 +53,16 @@ jobs:
           fail-on-breaking: true
 ```
 
-## Inputs
+## What You Get
 
-| Input | Required | Default | Description |
-|---|---|---|---|
-| `api-key` | Yes | — | CodeRifts API key. Get one free at [coderifts.com](https://app.coderifts.com/api/signup). |
-| `base-branch` | No | `main` | Base branch to compare against. |
-| `fail-on-breaking` | No | `true` | Fail the workflow when breaking changes are detected. |
+Every pull request that modifies an OpenAPI schema receives a governance report with:
 
-## Setup
-
-1. Get a free API key at [app.coderifts.com/api/signup](https://app.coderifts.com/api/signup)
-2. Add `CODERIFTS_API_KEY` as a repository secret in **Settings → Secrets and variables → Actions**
-3. Add the workflow file above to `.github/workflows/api-governance.yml`
-4. Every pull request that modifies an OpenAPI spec will now run a CodeRifts check
-
-## What It Does
-
-On every pull request, CodeRifts:
-
-- Detects 10 types of breaking changes (endpoint removals, type changes, required field additions, etc.)
-- Calculates a risk score (0–100) across 4 dimensions
-- Checks policy violations (breaking budgets, freeze windows, no-delete rules)
-- Runs security analysis (auth changes, sensitive field exposure)
-- Posts a summary to the GitHub Actions job summary
+- **Risk Score (0–100)** — Revenue impact, blast radius, compatibility, and security scored across 4 dimensions
+- **Policy Violations** — Breaking budgets, freeze windows, and approval requirements checked against `.coderifts.yml`
+- **Security Analysis** — Auth scheme changes detected with 5 severity levels and OAuth scope tracking
+- **Migration Estimates** — Engineering effort and downstream service impact calculated per breaking change
+- **Change Intent** — Every change classified as structural, behavioral, security, or performance
+- **Confidence Score** — How certain CodeRifts is about each detected change
 
 ## When to Use This vs. the GitHub App
 
@@ -59,12 +75,29 @@ On every pull request, CodeRifts:
 
 If you want zero-config PR comments with no workflow file, [install the GitHub App](https://github.com/apps/coderifts) instead.
 
+## Works Everywhere You Code
+
+This is the GitHub Actions integration. CodeRifts also works with:
+
+| Platform | How |
+|---|---|
+| GitHub App | Zero-config, one-click install |
+| GitHub Actions | `uses: coderifts/action@v1` (this repo) |
+| GitLab CI | [CI/CD Catalog component](https://coderifts.com/integrations/gitlab/) |
+| Bitbucket Pipelines | [Docker pipe](https://coderifts.com/integrations/bitbucket/) |
+| REST API | Bearer token, any CI/CD system |
+| CLI | `npx coderifts diff` |
+| Web UI | [app.coderifts.com/try](https://app.coderifts.com/try) |
+
+Full integration docs: [coderifts.com/integrations/](https://coderifts.com/integrations/)
+
 ## Links
 
-- [CodeRifts Website](https://coderifts.com)
-- [GitHub App](https://github.com/apps/coderifts)
-- [Documentation](https://coderifts.com/docs/)
-- [CLI on npm](https://www.npmjs.com/package/coderifts)
+- **Website:** [coderifts.com](https://coderifts.com)
+- **GitHub Actions docs:** [coderifts.com/integrations/github-actions/](https://coderifts.com/integrations/github-actions/)
+- **Install GitHub App:** [github.com/apps/coderifts](https://github.com/apps/coderifts)
+- **All integrations:** [coderifts.com/integrations/](https://coderifts.com/integrations/)
+- **CLI on npm:** [npmjs.com/package/coderifts](https://www.npmjs.com/package/coderifts)
 
 ## License
 
