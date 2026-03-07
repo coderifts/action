@@ -1,7 +1,7 @@
 # CodeRifts GitHub Action
 
 [![npm version](https://img.shields.io/npm/v/coderifts?color=blue&label=coderifts)](https://www.npmjs.com/package/coderifts)
-[![License: Proprietary](https://img.shields.io/badge/license-Proprietary-red.svg)](https://coderifts.com/terms/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 Official GitHub Action for [CodeRifts](https://coderifts.com) — API governance on every pull request. Detects breaking changes in OpenAPI schemas, scores risk, enforces policies, and posts a governance report as a PR comment.
 
@@ -101,4 +101,6 @@ Full integration docs: [coderifts.com/integrations/](https://coderifts.com/integ
 
 ## License
 
-Proprietary. See [Terms of Service](https://coderifts.com/terms/).
+This GitHub Action wrapper is open-source under the [MIT License](LICENSE). It calls the CodeRifts API, which is a proprietary service governed by the [Terms of Service](https://coderifts.com/terms/).
+
+The Action itself contains no proprietary logic — it is a thin wrapper that sends your OpenAPI spec to the CodeRifts API and formats the response. You are free to fork, modify, and redistribute the Action code.
