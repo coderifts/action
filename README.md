@@ -5,7 +5,7 @@
 
 Official GitHub Action for [CodeRifts](https://coderifts.com) — API governance on every pull request. Detects breaking changes in OpenAPI schemas, scores risk, enforces policies, and posts a governance report as a PR comment.
 
-Works with GitHub, GitLab, Bitbucket, and any CI/CD pipeline.
+A GitHub Action. For other CI systems, use the `coderifts` CLI directly.
 
 ## Quick Start
 
