@@ -21,8 +21,22 @@ A GitHub Action. For other CI systems, use the `coderifts` CLI directly.
 |---|---|---|---|
 | `api-key` | Yes | — | Your CodeRifts API key |
 | `base-branch` | No | `main` | Branch to compare against |
-| `fail-on-breaking` | No | `false` | Fail the workflow on breaking changes |
+| `fail-on-breaking` | No | `true` | Fail the workflow on breaking changes (`coderifts diff --ci`: exit 1 on a break; exit 2, "could not decide", always fails the step) |
+| `spec-path` | No | `api/openapi.yaml` | Contract file to compare, relative to the repository root; its version on `origin/<base-branch>` is the base |
 | `config-file` | No | `.coderifts.yml` | Path to governance policy file |
+
+## What this action binds, and what it does not prove
+
+It runs `coderifts diff <spec on origin/<base-branch>> <spec in the checkout>` (with `--ci` when
+`fail-on-breaking` is true) — the CLI's local analysis, on the runner. It binds **no receipt field**: it
+requests no receipt, verifies no signature, and does not call `preflight_change_set` or `authorize`.
+
+It does not prove:
+- that a change is authorized — a passing step means the local analysis found no break, not that a
+  signed CodeRifts decision allowed it (the signed path is the `CodeRifts / contract-gate` check);
+- that the comparison covers more than `spec-path` — another contract file in the repository is not read;
+- that the base is what it should be — the base is the file on `origin/<base-branch>` at the time of the
+  run; a contract absent there is reported as new and the step passes.
 
 ## Setup
 

@@ -17,6 +17,10 @@ inputs:
     description: 'Fail the workflow on breaking changes'
     required: false
     default: 'true'
+  spec-path:
+    description: 'Contract file to compare, relative to the repository root; its version on origin/<base-branch> is the base'
+    required: false
+    default: 'api/openapi.yaml'
 
 runs:
   using: 'node20'
